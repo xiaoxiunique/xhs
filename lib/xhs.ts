@@ -114,7 +114,12 @@ export async function searchNotes(keyword: string) {
         comment_count: item.note_card?.interact_info?.comment_count || 0,
       },
       imageList:
-        item.note_card?.image_list?.map((img: any) => img.info_list[0].url) ||
+        item.note_card?.image_list?.map((img: any) => {
+          // https://sns-webpic-qc.xhscdn.com/202507091728/5bc849e407569cf57466672c7574bf2e/1040g00831ihgqv2nge6g5n5aniqk6pjl0mvoeqg!nc_n_webp_mw_1
+          // 1040g00831ihgqv2nge6g5n5aniqk6pjl0mvoeqg
+          const fileId = img.info_list[0].url.split("/").pop()?.split(".")[0];
+          return `https://ci.xiaohongshu.com/${fileId}?imageView2/2/w/1080/format/jpg`;
+        }) ||
         [],
       is_video: item.note_card?.type === "video",
     }));
